@@ -1,0 +1,47 @@
+---
+title: "LLN Demonstration with Cauchy Distribution"
+author: "Thomas Misikoff"
+date: "2024-04-03"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+```
+
+
+```{r}
+# Function to calculate put option payoff
+put_payoff <- function(stock_price, strike_price, premium) {
+  payoff <- ifelse(stock_price < strike_price,
+    strike_price - stock_price, 0
+  ) - premium
+  return(payoff)
+}
+
+# Define stock price range and strike price
+stock_price <- seq(40, 160, by = 1) # Stock price range
+strike_price <- 80 # Strike price
+
+# Calculate put option payoffs for different premiums
+premiums <- c(0, 5, 10) # Premiums
+payoffs <- sapply(
+  premiums,
+  function(p) put_payoff(stock_price, strike_price, p)
+)
+
+# Create data frame for plotting
+df <- data.frame(
+  stock_price = rep(stock_price, length(premiums)),
+  Payoff = c(payoffs),
+  Premium = factor(rep(premiums, each = length(stock_price)))
+)
+
+# Plot put option payoff profile
+ggplot(df, aes(x = stock_price, y = Payoff, color = Premium)) +
+  geom_line() +
+  labs(x = "Stock Price", y = "Payoff", color = "Option Premium") +
+  theme_minimal() +
+  ggtitle("Put Option Payoff Profile at Strike Price of $80")
+```

@@ -62,7 +62,7 @@ create_side_by_side_plot2 <- function(df, use_log = TRUE, quantiles = c()) {
     dplyr::mutate(
       is_special = .data$index %in% special_indices,
       opacity = ifelse(.data$is_special, 1, 0.2),
-      color = ifelse(.data$is_special, "black", "blue"),
+      color = ifelse(.data$is_special, "black", "red"),
       size = ifelse(.data$is_special, 1, 1)
     )
 
@@ -174,12 +174,12 @@ for (i in 1:num_lines) {
   }
 }
 
-create_side_by_side_plot(df,
+create_side_by_side_plot2(df,
   # use_log = FALSE,
   quantiles = c(
-    0.05,
+    0.2,
     0.5,
-    0.95
+    0.8
   )
 )
 
