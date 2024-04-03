@@ -1,0 +1,70 @@
+---
+title: "SPY Analysis"
+author: "Thomas Misikoff"
+date: "2024-04-03"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(devtools)
+devtools::install_github("misikoff/TailRiskAnalyzer")
+library(gganimate)
+library(ggplot2)
+library(gifski)
+library(TailRiskAnalyzer)
+library(dplyr)
+library(tidyverse)
+library(moments)
+```
+
+
+```{r}
+# load SPY data from Yahoo Finance
+spy <- read.csv("./SPY-data.csv")
+spy$Proportion.Change <- (SPY$Close - lag(SPY$Close)) / lag(SPY$Close)
+hist(spy$Proportion.Change * 100,
+  breaks = 100,
+  main = "SPY Daily % Change",
+  xlab = "Daily Returns %",
+  col = "lightblue"
+)
+```
+
+```{r}
+mean_spy_change <- mean(spy$Proportion.Change, na.rm = TRUE)
+var_spy_change <- var(spy$Proportion.Change, na.rm = TRUE)
+
+# plot normal distribution
+ggplot(data.frame(x = c(-0.05, 0.05)), aes(x)) +
+  stat_function(
+    fun = dnorm,
+    args = list(
+      mean = mean_spy_change,
+      sd = sqrt(var_spy_change)
+    )
+  ) +
+  labs(
+    title = "SPY Daily Log Returns",
+    x = "Daily Log Returns",
+    y = "Density"
+  ) +
+  theme_minimal() +
+  # add histogram of spy returns
+  geom_histogram(
+    data = spy,
+    aes(Proportion.Change,
+      y = after_stat(density)
+    ),
+    bins = 100,
+    alpha = 0.5
+  )
+```
+
+
+```{r}
+kurtosis(spy$Proportion.Change, na.rm = TRUE)
+```
+
+
+

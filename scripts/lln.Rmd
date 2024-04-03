@@ -1,0 +1,21 @@
+---
+title: "LLN Demonstration with Cauchy Distribution"
+author: "Thomas Misikoff"
+date: "2024-04-03"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(devtools)
+devtools::install_github("misikoff/TailRiskAnalyzer")
+library(TailRiskAnalyzer)
+```
+
+
+```{r}
+draw_lln_with_func_facet(
+  animate = FALSE, n = 200,
+  theoretical_mean = 2.5, stats::rcauchy, location = 2.5, scale = 2
+)
+```
