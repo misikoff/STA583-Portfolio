@@ -1,5 +1,5 @@
 ---
-title: "The Consequences of Fat-Tailed Distributions"
+title: "Understanding the Consequences of Fat-Tailed Distributions"
 author: "Thomas Misikoff"
 date: "2024-03-04"
 output: pdf_document
@@ -19,22 +19,22 @@ These distributions are often observed in nature and markets, and can have signi
 
 ## Software for Improved Understanding
 
-I've put together an R package, `TailRiskAnalyzer` available at https://misikoff.github.io/TailRiskAnalyzer/. This package includes many functions for exploring the implications of fat tails. These functions range the analytical to the demonstrative, and help users analyze distributions for "fat-tailedness" and understand the implications of "fat-tailedness".
+I've put together an R package, `TailRiskAnalyzer` available at https://misikoff.github.io/TailRiskAnalyzer/. This package includes many functions for exploring the implications of fat tails. These functions range from the analytical to the demonstrative, and help users analyze distributions for "fat-tailedness" and understand the implications of "fat-tailedness". Listed below are a few functions from the package with brief descriptions:
 
 - `p_normal_given_event`: calculate the relative odds of data coming from a normal distribution compared to a
 distribution with heavier tails, e.g., Student's t-distribution, Pareto distribution, etc.
-- `create_side_by_side_plot`: plot outcome distributions for different betting strategies, highlighting the difference between median outcome and expected value, and ensemble averages compared to time
+- `create_side_by_side_plot`: plot outcome distributions for different betting strategies, highlighting the difference between median outcome and expected value, and illustrating the differences between ensemble averages and time
 averages
 - `draw_lln_with_func_facet`: demonstrate the behavior of the sample mean taken from a provided distribution compared to a Normal distribution.
 
-```{r, echo=FALSE,out.width="49%", out.height="20%",fig.cap="create\\_side\\_by\\_side\\_plot demonstrates the distribution of outcomes of a betting game based on sequential coin tosses (left) \n and draw\\_lln\\_with\\_func\\_facet demonstrate the behavior of the sample mean taken from a Cauchy distribution compared to a Normal(0,1) (right)",fig.show='hold',fig.align='center'}
+```{r, echo=FALSE,out.width="49%", out.height="20%",fig.cap="create\\_side\\_by\\_side\\_plot demonstrates the distribution of outcomes of a betting game based on sequential coin tosses (left) \n and draw\\_lln\\_with\\_func\\_facet demonstrates the behavior of the sample mean taken from a Cauchy distribution compared to a sample mean from a Normal distribution (right)",fig.show='hold',fig.align='center'}
 knitr::include_graphics(c(
   "./images/TailRiskAnalyzer/side.png",
   "./images/TailRiskAnalyzer/cauchy.png"
 ))
 ```
 
-These relatively simple functions can be helpful for developing better intuitions about distributions and their properties. For example in the second plot of Figure 1, the behavior of the sample mean from a Cauchy distribution is compared to a Normal(0,1) distribution. While the Normal(0, 1) converges quickly, the Cauchy distribution does not converge at all, as the Central Limit Theorem does not apply, given the Cauchy distribution's undefined mean and variance. In fact the sample mean of $\text{Cauchy}(0, 1)$ distribution is also $\text{Cauchy}(0, 1)$. Graphs like this can be a helpful tool for understanding what this property means in practice.
+These relatively simple functions can be helpful for developing better intuitions about distributions and their properties. For example in the second plot of Figure 1, the behavior of the sample mean from a Cauchy distribution is compared to a $\text{Normal(0,1)}$ distribution. While the $\text{Normal}(0, 1)$ converges quickly, the Cauchy distribution does not converge at all, as the Central Limit Theorem does not apply, given the Cauchy distribution's undefined mean and variance. In fact, the sample mean of a $\text{Cauchy}(0, 1)$ distribution is also a $\text{Cauchy}(0, 1)$. Graphs like this can be a helpful tool for understanding what this property means in practice.
 
 # Real World Applications in Finance
 
@@ -46,19 +46,19 @@ knitr::include_graphics(c(
 ))
 ```
 
-Investing in the S&P 500, via SPY, is a classic buy-and-hold strategy with a great historic record, but this strategy's risk profile may be improved through "insurance" to adjust it's risk profile, in light of the excess kurtosis of the returns. In this case, the insurance we are seeking should have a predictable, fixed cost, and offset losses in SPY. Insuring this portfolio against catastrophic losses can be seen as a way to raise the median outcome in exchange for lowering the mean outcome through insurance premiums. Here the median and the mean can be far apart, due to the excess kurtosis. This could be a great exchange given we don't have the luxury of experiencing all potential paths for the portfolio and must be satisfied with the single path we experience.
+Investing in the S&P 500, via SPY, is a classic buy-and-hold strategy with a great historic record, but this strategy's risk profile may be improved through "insurance", in light of the excess kurtosis of the returns. In this case, the insurance we are seeking should have a predictable, fixed cost, and offset losses in SPY. Insuring this portfolio against catastrophic losses can be seen as a way to raise the median outcome in exchange for lowering the mean outcome through insurance premiums. Here the median and the mean can be far apart, due to the excess kurtosis. This could be a great exchange given we don't have the luxury of experiencing all potential paths for the portfolio and must be satisfied with the single path the index takes.
 
 ## Insurance Through Options
 
-Buying options is a natural fit for insuring a portfolio, as they have fixed costs. A 'put' option gives the owner the right to sell a stock at a specified price at any time between the purchase of the contract and it's expiration, as opposed to a 'call' option which gives the owner the right to sell at a specified price. If we wish to offset major downturns in a stock, we may purchase 'put' options that become increasingly profitable as the stock value drops.
+Buying options is a natural fit for insuring a portfolio, as they have fixed costs. A 'put' option gives the owner the right to sell a stock at a specified *strike price* at any time between the purchase of the contract and it's expiration, as opposed to a 'call' option which gives the owner the right to sell at a specified strike price. If we wish to offset losses from major downturns in a stock, we may purchase 'put' options that become increasingly profitable as the stock value drops.
 
-### Anatomy of A Stock Option
+### Anatomy of a Stock Option
 
 - **Strike Price**: The price at which the option holder can buy or sell the stock.
 - **Expiration Date**: The date at which the option contract expires.
 - **Option Premium**: The price paid for the option contract.
-- **In-the-Money**: A call option is in-the-money if the stock price is above the strike price. A put option is in-the-money if the stock price is below the strike price.
-- **Out-of-the-Money**: A call option is out-of-the-money if the stock price is below the strike price. A put option is out-of-the-money if the stock price is above the strike price.
+- **In-the-Money**: A call option is in-the-money (or profitable) if the stock price is above the strike price. A put option is in-the-money if the stock price is below the strike price.
+- **Out-of-the-Money**: A call option is out-of-the-money (or unprofitable) if the stock price is below the strike price. A put option is out-of-the-money if the stock price is above the strike price.
 - **At-the-Money**: The stock price is equal to the strike price.
 - **Payoff Profile**: The profit or loss of an option at expiration, given the stock price at that time.
 
@@ -70,7 +70,7 @@ knitr::include_graphics(c(
 
 ## Insuring a SPY Portfolio
 
-The portfolio's primary position will be shares of SPY. The remainder of the portfolio will be invested in 'put' options which become profitable when large downturns in SPY occur, or are expected. These options expire over time, so the portfolio must be rebalanced periodically. For the specifics of handling the put options, I borrowed from Mark Spitznagel's <u>The Dao of Capital<u>, which suggested hedging against tail-risk through put options with a strike price 30% below current market value that expire in 60 options. Every 30 days, these options will be sold and a new batch of options expiring 60 days in the future will be purchased.
+The portfolio's primary position will be shares of SPY. The remainder of the portfolio will be invested in 'put' options which become profitable when large downturns in SPY occur, or are expected. These options expire over time, so the portfolio must be rebalanced periodically. For the specifics of handling the put options, I borrowed from hedge fund manager Mark Spitznagel writings, which suggested hedging against tail-risk through put options with a strike price 30% below current market value with expirations 60 days in the future. Every 30 days, these options will be sold and a new batch of options expiring in 60 days will be purchased.
 
 ### Summary of Insured SPY Strategy
 
@@ -78,12 +78,14 @@ Each month (on the third Friday):
 
 - sell any held options
 - rebalance portfolio between SPY and put options
-  1. 95.5%: SPY
-  2. 0.5%: SPY put options that are 30% "out-of-the-money", with expirations 60 days in the future
+  1. **95.5% SPY**
+  2. **0.5% SPY put options** that are 30% below the current price (out-of-the-money), with expirations 60 days in the future
 
 ## Measuring Performance through Portfolio Statistics
 
 ### Beta
+
+$\beta$ measures the variance of a portfolio's returns relative to the variance of the market. It is a limited, but popular proxy for risk. This variance is not only relevant in terms of outcomes, but also in terms of psychology, as intermittent fluctuations may be tough to for investors to bear.
 
 $$
 \begin{aligned}
@@ -97,9 +99,9 @@ $$
 
 - $r_p$	=	expected return on portfolio $p$
 
-$\beta$ measures the variance of a portfolio's returns relative to the variance of the market. It is a limited, but popular proxy for risk. This variance is not only relevant in terms of outcomes, but also in terms of psychology, as intermittent fluctuations may be tough to for investors to bear.
-
 ### Treynor Ratio
+
+The Treynor Ratio measures the excess returns (as compared to the risk-free rate of return), relative to the $\beta$ of the asset. This ratio can be seen as a simple score for an asset or portfolio, where higher numbers represent more favorable outcomes.
 
 $$
 \begin{aligned}
@@ -113,18 +115,16 @@ $$
 
 - $B_p$	=	beta of portfolio $p$
 
-The Treynor Ratio measures the excess returns (compared to the risk-free rate of return), compared to the $\beta$ of the asset. This ratio can be seen as a simple score for an asset or portfolio, where higher numbers represent more favorable outcomes.
-
 ## Results
 
-I implemented this strategy on the QuantConnect platform to simulate it's performance. Results were simulated for January 1st, 2007 through January 1st 2024. This time period was selected based on the data available on the platform at the time. In the table below, the results of the "insured" strategy are compared to the "naive" buy-and-hold strategy.
+I implemented this strategy on QuantConnect's algorithmic trading platform to simulate it's performance. Results were simulated for January 1st, 2007 through January 1st 2024. This time period was selected based on the data available on the platform at the time. In the table below, the results of the "insured" strategy are compared to the "naive" buy-and-hold strategy.
 
-| Strategy | Return | $\beta_p$ | $T_p$
+| Strategy | Return (%) | $\beta_p$ | $T_p$
 | :-------- | -------: | ---: | --: |
 | SPY Buy-and-Hold | 360.60 | 0.996 | 0.062
 | Insured SPY | 388.68 | 0.597 | 0.113
 
-As the table above shows, the $beta$ of the insured strategy was significantly reduced. In this case, in a welcome surprise, the insurance itself yielded a positive return thanks to the shock of the COVID pandemic, which increased concern for a market crash, creating a huge payoff for the strategy's put options in March of 2020.
+As the table above shows, the $beta$ of the insured strategy was significantly reduced. In this case, in a welcome surprise, the insurance itself also yielded a positive return thanks to the shock of the COVID pandemic, which increased concern for a market crash, creating a huge payoff for the strategy's put options in March of 2020.
 
 These two factors equate to an improvement in the Treynor Ratio of about 82% over the naive "SPY Buy-and-Hold" strategy.
 
@@ -160,6 +160,8 @@ All code for this report is available on the GitHub repository for this report: 
 
 The repository for the package `TailRiskAnalyzer` can be found at https://github.com/misikoff/TailRiskAnalyzer/.
 The documentation website is available at https://misikoff.github.io/TailRiskAnalyzer/.
+
+For more about QuantConnect's algorithmic trading platform, visit https://www.quantconnect.com/.
 
 ## QuantConnect Algorithm
 
